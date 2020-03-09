@@ -11,7 +11,7 @@ type MongoDBEngineConfig = {
   migrationRecordCollection: string;
 };
 
-const validProtocol = ['mongodb', 'mongodb+srv'];
+const validProtocol = ['mongodb', 'mongodb srv'];
 
 export function getConfig(
   uri: string
@@ -21,7 +21,7 @@ export function getConfig(
 } {
   try {
     const {
-      protocol: parsedProtocol,
+      protocol,
       hostname: host,
       path,
       params
@@ -32,12 +32,9 @@ export function getConfig(
       }
     });
 
-    if (!parsedProtocol) {
+    if (!protocol) {
       throw new Error(`[URI] missing: protocol!`);
     }
-
-    // `ConnectionString` replaces `+` in protocol with ` `
-    const protocol = parsedProtocol.replace(' ', '+');
 
     if (!validProtocol.includes(protocol)) {
       throw new Error(`[URI] unsupported: protocol(${protocol})!`);
